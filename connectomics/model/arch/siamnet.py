@@ -14,15 +14,15 @@ class SiameseNet(nn.Module):
 		super(SiameseNet, self).__init__()
 
 		self.encoder = encoder
-		self.projector = ProjectionHead()
-        self.predictor = PredictionModel()
+		self.projector = ProjectionHead(2048)
+		self.predictor = PredictionModel()
 
-    def forward(self, x1, x2):
-        h1, h2 = self.encoder(x1), self.encoder(x2)
-        z1, z2 = self.projector(h1), self.projector(h2)
-        p1, p2 = self.predictor(z1), self.predictor(z2)
+	def forward(self, x1, x2):
+		h1, h2 = self.encoder(x1), self.encoder(x2)
+		z1, z2 = self.projector(h1), self.projector(h2)
+		p1, p2 = self.predictor(z1), self.predictor(z2)
 
-        return p1, p2
+		return p1, p2
 
 class ProjectionHead(nn.Module):
 	'''Projection Head. 3-layer MLP with hidden fc 2048-d.
@@ -71,5 +71,5 @@ class PredictionModel(nn.Module):
 
 
 def similarity_func():
-    '''negative cosine similarity for measuring the similarity of two vectors.'''
-    return (- F.cosine_similarity(p, z.detach(), dim=-1).mean())
+	'''negative cosine similarity for measuring the similarity of two vectors.'''
+	return (- F.cosine_similarity(p, z.detach(), dim=-1).mean())

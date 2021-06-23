@@ -15,9 +15,9 @@ AUGMENTOR_TYPE = Optional[Compose]
 
 class VolumeDataset(torch.utils.data.Dataset):
     """
-    Dataset class for volumetric image datasets. At training time, subvolumes are randomly sampled from all the large 
-    input volumes with (optional) rejection sampling to increase the frequency of foreground regions in a batch. At inference 
-    time, subvolumes are yielded in a sliding-window manner with overlap to counter border artifacts. 
+    Dataset class for volumetric image datasets. At training time, subvolumes are randomly sampled from all the large
+    input volumes with (optional) rejection sampling to increase the frequency of foreground regions in a batch. At inference
+    time, subvolumes are yielded in a sliding-window manner with overlap to counter border artifacts.
 
     Args:
         volume (list): list of image volumes.
@@ -37,9 +37,9 @@ class VolumeDataset(torch.utils.data.Dataset):
         reject_diversity (int, optional): threshold to decide if a sampled volumes contains multiple objects. Default: 0
         reject_p (float, optional): probability of rejecting non-foreground volumes. Default: 0.95
 
-    Note: 
-        For relatively small volumes, the total number of possible subvolumes can be smaller than the total number 
-        of samples required in training (the product of total iterations and mini-natch size), which raises *StopIteration*. 
+    Note:
+        For relatively small volumes, the total number of possible subvolumes can be smaller than the total number
+        of samples required in training (the product of total iterations and mini-natch size), which raises *StopIteration*.
         Therefore the dataset length is also decided by the training settings.
     """
 
@@ -233,7 +233,7 @@ class VolumeDataset(torch.utils.data.Dataset):
     # Volume Sampler
     #######################################################
     def _rejection_sampling(self, vol_size):
-        """Rejection sampling to filter out samples without required number 
+        """Rejection sampling to filter out samples without required number
         of foreground pixels or valid ratio.
         """
         while True:
@@ -254,11 +254,13 @@ class VolumeDataset(torch.utils.data.Dataset):
                 out_volume, out_label = augmented['image'], augmented['label']
                 out_valid = augmented['valid_mask']
 
+                print('gimeeeeeeeeeeeeeeeeeeee', out_volume.shape)
+
             if self._is_valid(out_valid) and self._is_fg(out_label):
                 return pos, out_volume, out_label, out_valid
 
     def _random_sampling(self, vol_size):
-        """Randomly sample a subvolume from all the volumes. 
+        """Randomly sample a subvolume from all the volumes.
         """
         pos = self._get_pos_train(vol_size)
         return self._crop_with_pos(pos, vol_size)

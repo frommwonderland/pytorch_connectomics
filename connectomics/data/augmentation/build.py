@@ -15,7 +15,7 @@ from .cutnoise import CutNoise
 
 def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_smoothed: bool = False):
     r"""Build the training augmentor based on the options specified in the configuration
-    file. 
+    file.
 
     Args:
         cfg (yacs.config.CfgNode): YACS configuration options.
@@ -27,7 +27,7 @@ def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_s
         which are `False` by defaults and can not be adjusted in the config file.
     """
     aug_list = []
-    
+
     names = cfg.AUGMENTOR.ADDITIONAL_TARGETS_NAME
     types = cfg.AUGMENTOR.ADDITIONAL_TARGETS_TYPE
     if names is None:
@@ -55,14 +55,14 @@ def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_s
     if cfg.AUGMENTOR.FLIP.ENABLED:
         aug_list.append(
             Flip(do_ztrans=cfg.AUGMENTOR.FLIP.DO_ZTRANS,
-                 p=cfg.AUGMENTOR.FLIP.P, 
+                 p=cfg.AUGMENTOR.FLIP.P,
                  additional_targets=additional_targets))
 
     #4. elastic
     if cfg.AUGMENTOR.ELASTIC.ENABLED:
         aug_list.append(
-            Elastic(alpha=cfg.AUGMENTOR.ELASTIC.ALPHA, 
-                    sigma=cfg.AUGMENTOR.ELASTIC.SIGMA, 
+            Elastic(alpha=cfg.AUGMENTOR.ELASTIC.ALPHA,
+                    sigma=cfg.AUGMENTOR.ELASTIC.SIGMA,
                     p=cfg.AUGMENTOR.ELASTIC.P,
                     additional_targets=additional_targets))
 
@@ -84,13 +84,13 @@ def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_s
             aug_list.append(
                 MissingSection(
                     num_sections=cfg.AUGMENTOR.MISSINGSECTION.NUM_SECTION,
-                    p=cfg.AUGMENTOR.MISSINGSECTION.P, 
+                    p=cfg.AUGMENTOR.MISSINGSECTION.P,
                     additional_targets=additional_targets))
 
     #8. misalignment
     if cfg.AUGMENTOR.MISALIGNMENT.ENABLED and not cfg.DATASET.DO_2D:
             aug_list.append(
-                MisAlignment( 
+                MisAlignment(
                     displacement=cfg.AUGMENTOR.MISALIGNMENT.DISPLACEMENT,
                     rotate_ratio=cfg.AUGMENTOR.MISALIGNMENT.ROTATE_RATIO,
                     p=cfg.AUGMENTOR.MISALIGNMENT.P,
@@ -99,8 +99,8 @@ def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_s
     #9. motion-blur
     if cfg.AUGMENTOR.MOTIONBLUR.ENABLED:
         aug_list.append(
-            MotionBlur( 
-                sections=cfg.AUGMENTOR.MOTIONBLUR.SECTIONS, 
+            MotionBlur(
+                sections=cfg.AUGMENTOR.MOTIONBLUR.SECTIONS,
                 kernel_size=cfg.AUGMENTOR.MOTIONBLUR.KERNEL_SIZE,
                 p=cfg.AUGMENTOR.MOTIONBLUR.P,
                 additional_targets=additional_targets))
@@ -108,7 +108,7 @@ def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_s
     #10. cut-blur
     if cfg.AUGMENTOR.CUTBLUR.ENABLED:
         aug_list.append(
-            CutBlur(length_ratio=cfg.AUGMENTOR.CUTBLUR.LENGTH_RATIO, 
+            CutBlur(length_ratio=cfg.AUGMENTOR.CUTBLUR.LENGTH_RATIO,
                     down_ratio_min=cfg.AUGMENTOR.CUTBLUR.DOWN_RATIO_MIN,
                     down_ratio_max=cfg.AUGMENTOR.CUTBLUR.DOWN_RATIO_MAX,
                     downsample_z=cfg.AUGMENTOR.CUTBLUR.DOWNSAMPLE_Z,
@@ -118,16 +118,16 @@ def build_train_augmentor(cfg: CfgNode, keep_uncropped: bool = False, keep_non_s
     #11. cut-noise
     if cfg.AUGMENTOR.CUTNOISE.ENABLED:
         aug_list.append(
-            CutNoise(length_ratio=cfg.AUGMENTOR.CUTNOISE.LENGTH_RATIO, 
+            CutNoise(length_ratio=cfg.AUGMENTOR.CUTNOISE.LENGTH_RATIO,
                      scale=cfg.AUGMENTOR.CUTNOISE.SCALE,
-                     p=cfg.AUGMENTOR.CUTNOISE.P, 
+                     p=cfg.AUGMENTOR.CUTNOISE.P,
                      additional_targets=additional_targets))
 
     # compose the list of transforms
-    augmentor = Compose(transforms=aug_list, 
-                        input_size=cfg.MODEL.INPUT_SIZE, 
+    augmentor = Compose(transforms=aug_list,
+                        input_size=cfg.MODEL.INPUT_SIZE,
                         smooth=cfg.AUGMENTOR.SMOOTH,
-                        keep_uncropped=keep_uncropped, 
+                        keep_uncropped=keep_uncropped,
                         keep_non_smoothed=keep_non_smoothed,
                         additional_targets=additional_targets)
 
@@ -163,15 +163,15 @@ def build_ssl_augmentor(cfg):
     #5. motion-blur
     if cfg.AUGMENTOR.MOTIONBLUR.ENABLED:
         aug_list.append(
-            MotionBlur( 
-                sections=cfg.AUGMENTOR.MOTIONBLUR.SECTIONS, 
+            MotionBlur(
+                sections=cfg.AUGMENTOR.MOTIONBLUR.SECTIONS,
                 kernel_size=cfg.AUGMENTOR.MOTIONBLUR.KERNEL_SIZE,
                 p=cfg.AUGMENTOR.MOTIONBLUR.P))
 
     #6. cut-blur
     if cfg.AUGMENTOR.CUTBLUR.ENABLED:
         aug_list.append(
-            CutBlur(length_ratio=cfg.AUGMENTOR.CUTBLUR.LENGTH_RATIO, 
+            CutBlur(length_ratio=cfg.AUGMENTOR.CUTBLUR.LENGTH_RATIO,
                     down_ratio_min=cfg.AUGMENTOR.CUTBLUR.DOWN_RATIO_MIN,
                     down_ratio_max=cfg.AUGMENTOR.CUTBLUR.DOWN_RATIO_MAX,
                     downsample_z=cfg.AUGMENTOR.CUTBLUR.DOWNSAMPLE_Z,
@@ -180,11 +180,17 @@ def build_ssl_augmentor(cfg):
     #7. cut-noise
     if cfg.AUGMENTOR.CUTNOISE.ENABLED:
         aug_list.append(
-            CutNoise(length_ratio=cfg.AUGMENTOR.CUTNOISE.LENGTH_RATIO, 
+            CutNoise(length_ratio=cfg.AUGMENTOR.CUTNOISE.LENGTH_RATIO,
                      scale=cfg.AUGMENTOR.CUTNOISE.SCALE,
                      p=cfg.AUGMENTOR.CUTNOISE.P))
 
-    return Compose(transforms=aug_list, 
-                   input_size=cfg.MODEL.INPUT_SIZE, 
+    return Compose(transforms=aug_list,
+                   input_size=cfg.MODEL.INPUT_SIZE,
                    smooth=cfg.AUGMENTOR.SMOOTH,
                    additional_targets=None)
+
+
+def build_contrastive_augmentor():
+    r"""Build the data augmentor for self-supervised contrastive learning.
+    """
+    pass

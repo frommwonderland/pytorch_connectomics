@@ -1,0 +1,26 @@
+SYSTEM:
+  NUM_GPUS: 4
+  NUM_CPUS: 16
+MODEL:
+  ARCHITECTURE: ResNet3D
+  BLOCK_TYPE: residual
+  BACKBONE: 'resnet'
+  INPUT_SIZE: [129, 129, 129]
+  OUTPUT_SIZE: [112, 112, 112]
+  IN_PLANES: 1
+  OUT_PLANES: 1
+DATASET:
+  IMAGE_NAME: img/train_im.tif
+  LABEL_NAME: label/train_label.tif
+  INPUT_PATH: datasets/Lucchi/
+  OUTPUT_PATH: outputs/Lucchi/
+  PAD_SIZE: [8, 28, 28]
+  DISTRIBUTED: False
+AUGMENTOR:
+  FLIP:
+    ENABLED: True
+    DO_ZTRANS: 1
+  CUTBLUR:
+    DOWNSAMPLE_Z: True
+SOLVER:
+  LR_SCHEDULER_NAME: WarmupCosineLR
