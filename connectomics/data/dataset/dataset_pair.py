@@ -3,6 +3,7 @@ import numpy as np
 
 import torch
 import torch.utils.data
+from dataset_volume import VolumeDataset
 from ..augmentation import Compose
 from ..utils import *
 
@@ -11,7 +12,7 @@ WEIGHT_OPT_TYPE = List[List[str]]
 AUGMENTOR_TYPE = Optional[Compose]
 
 
-class PairDataset(torch.utils.data.Dataset):
+class PairDataset(VolumeDataset):
     r""" This Dataloader will prepare sample that are pairs for feeding the contrastive
     learning algorithm.
 
@@ -44,6 +45,7 @@ class PairDataset(torch.utils.data.Dataset):
         self.volume = volume
         self.label = label
         self.augmentor = augmentor
+        self.sample_volume_size = np.array(sample_volume_size).astype(int)
 
         print('---------------            I am Pairwise            ----------------')
 
@@ -55,4 +57,7 @@ class PairDataset(torch.utils.data.Dataset):
             sample_pair = self._create_sample_pair()
 
     def _create_sample_pair(self):
-        pass
+        r"""Create a sample pair that will be used for contrastive learning.
+        """
+        sample = self._random_sampling(self.sample_volume_size)
+        pos, out_volume, out_label, out_valid = sample
