@@ -254,8 +254,6 @@ class VolumeDataset(torch.utils.data.Dataset):
                 out_volume, out_label = augmented['image'], augmented['label']
                 out_valid = augmented['valid_mask']
 
-                print('gimeeeeeeeeeeeeeeeeeeee', out_volume.shape)
-
             if self._is_valid(out_valid) and self._is_fg(out_label):
                 return pos, out_volume, out_label, out_valid
 
