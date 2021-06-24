@@ -13,6 +13,7 @@ import torch.utils.data
 
 from .dataset_volume import VolumeDataset
 from .dataset_tile import TileDataset
+from .dataset_pair import PairDataset
 from .collate import *
 from ..utils import *
 
@@ -226,7 +227,11 @@ def get_dataset(cfg,
                               valid_mask_json=valid_mask_json,
                               pad_size=cfg.DATASET.PAD_SIZE,
                               **shared_kwargs)
-
+    elif cfg.DATASET.DO_SELF_SUPERVISED:
+        volume, label, valid_mask = _get_input(
+            cfg, mode, rank, dir_name_init, img_name_init)
+        dataset = PairDataset(volume=volume, label=label, valid_mask=valid_mask,
+                                iter_num=iter_num, augmentor=augmentor, mode=mode)
     else:  # build VolumeDataset
         volume, label, valid_mask = _get_input(
             cfg, mode, rank, dir_name_init, img_name_init)

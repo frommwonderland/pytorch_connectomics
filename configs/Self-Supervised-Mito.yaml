@@ -16,6 +16,7 @@ DATASET:
   OUTPUT_PATH: outputs/Lucchi/
   PAD_SIZE: [8, 28, 28]
   DISTRIBUTED: False
+  DO_SELF_SUPERVISED: True
 AUGMENTOR:
   FLIP:
     ENABLED: True

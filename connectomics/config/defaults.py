@@ -182,6 +182,9 @@ _C.DATASET.STD = 0.5
 
 _C.DATASET.DISTRIBUTED = False
 
+# Enable Dataloader for self-supervised contrastive learning.
+_C.DATASET.DO_SELF_SUPERVISED = False
+
 # -----------------------------------------------------------------------------
 # Augmentor
 # -----------------------------------------------------------------------------
