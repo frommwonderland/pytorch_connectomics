@@ -16,10 +16,10 @@ from .cutblur import CutBlur
 from .cutnoise import CutNoise
 from .mixup import MixupAugmentor
 
-from .build import build_train_augmentor, build_ssl_augmentor
+from .build import build_train_augmentor, build_ssl_augmentor, build_contrastive_augmentor
 
 __all__ = ['Compose',
-           'DataAugment', 
+           'DataAugment',
            'Elastic',
            'Grayscale',
            'Rotate',
@@ -33,4 +33,5 @@ __all__ = ['Compose',
            'CutNoise',
            'MixupAugmentor',
            'TestAugmentor',
-           'build_train_augmentor']
+           'build_train_augmentor',
+           'build_contrastive_augmentor']

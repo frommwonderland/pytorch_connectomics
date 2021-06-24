@@ -190,7 +190,28 @@ def build_ssl_augmentor(cfg):
                    additional_targets=None)
 
 
-def build_contrastive_augmentor():
+def build_contrastive_augmentor(cfg):
     r"""Build the data augmentor for self-supervised contrastive learning.
     """
-    pass
+    aug_list = []
+
+    #1. rotate
+    if cfg.AUGMENTOR.ROTATE.ENABLED:
+        aug_list.append(
+            Rotate(rot90=True,
+                   p=cfg.AUGMENTOR.ROTATE.P))
+
+    if cfg.AUGMENTOR.MOTIONBLUR.ENABLED:
+        aug_list.append(
+            MotionBlur(
+                sections=cfg.AUGMENTOR.MOTIONBLUR.SECTIONS,
+                kernel_size=cfg.AUGMENTOR.MOTIONBLUR.KERNEL_SIZE,
+                p=cfg.AUGMENTOR.MOTIONBLUR.P))
+
+    if cfg.AUGMENTOR.CUTNOISE.ENABLED:
+        aug_list.append(
+            CutNoise(length_ratio=cfg.AUGMENTOR.CUTNOISE.LENGTH_RATIO,
+                     scale=cfg.AUGMENTOR.CUTNOISE.SCALE,
+                     p=cfg.AUGMENTOR.CUTNOISE.P))
+
+    return Compose(transforms=aug_list, input_size=cfg.MODEL.INPUT_SIZE, smooth=cfg.AUGMENTOR.SMOOTH, additional_targets=None)
